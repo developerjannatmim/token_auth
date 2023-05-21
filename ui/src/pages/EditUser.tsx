@@ -7,20 +7,30 @@ const EditUser = () => {
     const {id} = useParams();
 
 
+    useEffect(()=>{
+        fetchUser()
+    },[]);
+
+    const fetchUser = () => {
+        fetch('http://localhost:8000/api/users/'+id+'/edit')
+        .then(response => response.json())
+        .then(setValue);
+    }
+
     const handleChange = (event: any) => {
         setValue({ [event.target.name]: event.target.value });
     };
 
     const handleSubmit = (event: any) => {
         event.preventDefault();
-        fetch('http://localhost:8000/api/users/', {
+        fetch('http://localhost:8000/api/users/'+id, {
             body: JSON.stringify(value),
             headers: {
                 'Content-Type': 'application/json',
             },
-            method: 'POST',
+            method: 'PUT',
 
-        })
+        },)
             .then((res) => {
                 res.json()
                 navigate("/");
@@ -29,24 +39,22 @@ const EditUser = () => {
 
     };
 
-    useEffect(() => {
-        fetch('http://localhost:8000/api/users/'+id)
-            .then(response => response.json())
-            .then(setValue)
 
-            
-            
-    }, []);
 
     return (
-        <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
+            <label className="col-sm-2 col-form-label" style={{marginLeft: "30px", fontWeight: "bold"}}>Name</label>
+            <div className="col-sm-5">
             <input
+                style={{marginLeft: "30px"}}
+                className="form-control"
                 name="name"
                 onChange={handleChange}
                 type="text"
                 value={value.name}
             />
-            <button type="submit">
+            </div>
+            <button type="submit" className='btn btn-info' style={{marginLeft: "30px", marginTop: "10px"}}>
                 Update
             </button>
         </form>

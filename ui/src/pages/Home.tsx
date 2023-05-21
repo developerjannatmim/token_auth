@@ -10,7 +10,7 @@ const Home = () => {
         .then((res) => {
             res.json()
             navigate("/");
-        })
+        });
           
             
     };
@@ -22,28 +22,28 @@ const Home = () => {
     }, []);
 
     return (
-        <table>
+        <table className="table table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Actions</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {users.map((user: any) => (
                     <tr key={user.id}>
-                        <th>{user.id}</th>
-                        <th>{user.name}</th>
-                        <th>
-                            <Link to={{pathname:"/edit-user/"+user.id}} ><button type='button' className='btn btn-info'>Edit</button></Link>
+                        <th scope="row">{user.id}</th>
+                        <td>{user.name}</td>
+                        <td>
+                            <Link to={`/users/${user.id}/edit`} ><button type='button' style={{marginRight: "10px"}} className='btn btn-outline-info'>Edit</button></Link>
                             <button
                                 onClick={() => handleDelete(user.id)}
-                                type="button" className='btn btn-danger'
+                                type="button" className='btn btn-outline-danger'
                             >
                                 Delete
                             </button>
-                        </th>
+                        </td>
                     </tr>
                 ))}
             </tbody>

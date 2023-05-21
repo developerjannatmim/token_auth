@@ -26,20 +26,22 @@ class UsersController extends Controller
     {
         return User::destroy($id);
     }
+
     public function edit($id)
     {
-        return response()->json(User::whereId($id)->first());
+        return User::find($id);
+
     }
 
     public function update(Request $request, $id)
     {
-        $user = User::whereId($id)->first();
-
+        $user = User::whereId($id);
         $user->update([
-            'name'=>$request->name,
-
+           'name'=>$request->name,
         ]);
 
         return response()->json();
     }
+
+
 }

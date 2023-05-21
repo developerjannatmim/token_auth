@@ -21,7 +21,7 @@ function App() {
           <Route path='/' element={<Home />}/>
           <Route path='*' element={<Error />}/>
           <Route path='/add-user' element={<AddUser />}/>
-          <Route path='/edit-user/:id' element={<EditUser />}/>
+          <Route path='/users/:id/edit' element={<EditUser />}/>
         </Routes>
       </div>
     </div>

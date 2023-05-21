@@ -26,14 +26,19 @@ const AddUser = () => {
 
     return (
         <form onSubmit={handleSubmit}>
+            <label className="col-sm-2 col-form-label" style={{marginLeft: "30px", fontWeight: "bold"}}>Name</label>
+            <div className="col-sm-5">
             <input
+                style={{marginLeft: "30px"}}
+                className="form-control"
                 name="name"
                 onChange={handleChange}
                 type="text"
                 value={value.name}
             />
-            <button type="submit">
-                Submit
+            </div>
+            <button type="submit" className='btn btn-info' style={{marginLeft: "30px", marginTop: "10px"}}>
+                Add User
             </button>
         </form>
     );
