@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const AddUser = () => {
+const Register = () => {
     const [value, setValue] = useState<Record<string, string>>({ 
         name: '',
         email: '',
         password: '',
 
     });
-       
-    
+
     const navigate = useNavigate();
 
     const handleChange = (event: any) => {
@@ -18,7 +17,7 @@ const AddUser = () => {
 
     const handleSubmit = (event: any) => {
         event.preventDefault();
-        fetch('http://localhost:8000/api/users', {
+        fetch('http://localhost:8000/api/register', {
             body: JSON.stringify(value),
             headers: {
                 'Content-Type': 'application/json',
@@ -32,6 +31,8 @@ const AddUser = () => {
     };
 
     return (
+      <>
+      <h2 style={{marginLeft: "30px", fontWeight: "bold"}}>Register</h2>
         <form onSubmit={handleSubmit}>
             <label className="col-sm-2 col-form-label" style={{marginLeft: "30px", fontWeight: "bold"}}>Name</label>
             <div className="col-sm-5">
@@ -50,10 +51,11 @@ const AddUser = () => {
        <input style={{marginLeft: "30px"}} type='password' name='password' value={value.password} onChange={handleChange} className='form-control mb-2'/>
             </div>
             <button type="submit" className='btn btn-info' style={{marginLeft: "30px", marginTop: "10px"}}>
-                Add User
+                Register
             </button>
         </form>
+        </>
     );
 };
 
-export default AddUser;
+export default Register;

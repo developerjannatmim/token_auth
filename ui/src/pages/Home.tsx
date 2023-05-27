@@ -5,6 +5,12 @@ const Home = () => {
     const [users, setUsers] = useState([]);
     const navigate = useNavigate(); 
        
+    useEffect(() => {
+        fetch('http://localhost:8000/api/users')
+            .then(response => response.json())
+            .then(setUsers);
+    }, []);
+
     const handleDelete = (id: any) => {
         fetch(`http://localhost:8000/api/users/${id}`, { method: 'DELETE' })
         .then((res) => {
@@ -15,18 +21,13 @@ const Home = () => {
             
     };
 
-    useEffect(() => {
-        fetch('http://localhost:8000/api/users')
-            .then(response => response.json())
-            .then(setUsers);
-    }, []);
-
     return (
         <table className="table table-striped">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Email</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
@@ -35,13 +36,13 @@ const Home = () => {
                     <tr key={user.id}>
                         <th scope="row">{user.id}</th>
                         <td>{user.name}</td>
+                        <td>{user.email}</td>
                         <td>
                             <Link to={`/users/${user.id}/edit`} ><button type='button' style={{marginRight: "10px"}} className='btn btn-outline-info'>Edit</button></Link>
                             <button
-                                onClick={() => handleDelete(user.id)}
-                                type="button" className='btn btn-outline-danger'
-                            >
-                                Delete
+                            onClick={() => handleDelete(user.id)}
+                            type="button" className='btn btn-outline-danger'>
+                            Delete
                             </button>
                         </td>
                     </tr>
