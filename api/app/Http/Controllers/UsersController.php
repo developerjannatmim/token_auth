@@ -15,12 +15,7 @@ class UsersController extends Controller
 
     public function store(Request $request)
     {
-        User::create([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=>$request->password
-         ]);
-         return response()->json('successfully created');
+        //
     }
 
     public function show($id)
@@ -28,10 +23,6 @@ class UsersController extends Controller
         return User::findOrFail($id);
     }
 
-    public function destroy($id)
-    {
-        return User::destroy($id);
-    }
 
     public function edit($id)
     {
@@ -51,6 +42,23 @@ class UsersController extends Controller
         return response()->json();
     }
 
+    public function destroy($id)
+    {
+        return User::destroy($id);
+    }
+
+
+    public function register(Request $request)
+    {
+        User::create([
+            'name'=>$request->name,
+            'email'=>$request->email,
+            'password'=>$request->password
+         ]);
+         return response()->json('successfully created');
+    }
+
+
     public function login(Request $request)
     {
         $user = User::where('email', $request->email)->first();
@@ -67,5 +75,7 @@ class UsersController extends Controller
         ];
         return response($response, 201);
     }
+
+
 
 }

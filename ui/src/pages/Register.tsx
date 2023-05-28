@@ -15,9 +15,9 @@ const Register = () => {
         setValue(values => ({...values,[event.target.name]: event.target.value}))
     };
 
-    const handleSubmit = (event: any) => {
+    const handleSubmit = async (event: any) => {
         event.preventDefault();
-        fetch('http://localhost:8000/api/register', {
+        await fetch('http://localhost:8000/api/register', {
             body: JSON.stringify(value),
             headers: {
                 'Content-Type': 'application/json',

@@ -8,6 +8,7 @@ import AddUser from './pages/AddUser'
 import EditUser from './pages/EditUser'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import Logout from './pages/Logout'
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
           <Route path='*' element={<Error />}/>
           {/* <Route path='/add-user' element={<AddUser />}/> */}
           <Route path='/login' element={<Login />}/>
+          <Route path='/logout' element={<Logout />}/>
           <Route path='/register' element={<Register />}/>
           <Route path='/users/:id/edit' element={<EditUser />}/>
         </Routes>
