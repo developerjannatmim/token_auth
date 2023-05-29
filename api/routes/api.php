@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\EmployeeController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,24 +14,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 use App\Http\Controllers\UsersController;
 
-Route::get('/users', [UsersController::class, 'index']);
-Route::post('/store', [UsersController::class, 'store']);
-Route::get('/users/{id}', [UsersController::class, 'show']);
-
-
-Route::group(["middleware"=>"auth:santum"], function () {
-
-    Route::delete('/users/{id}', [UsersController::class, 'destroy']);
-    Route::get('/users/{id}/edit', [UsersController::class, 'edit']);
-    Route::put('/users/{id}', [UsersController::class, 'update']);
-});
-
+// Public routes
+Route::get('/employees', [EmployeeController::class, 'index']);
 Route::post('/register', [UsersController::class, 'register']);
 Route::post('/login', [UsersController::class, 'login']);
-//Route::post('/logout', [UsersController::class, 'logout']);
+
+// Protected routes
+Route::group(["middleware" => ["auth:sanctum"]], function () {
+    Route::post('/save', [EmployeeController::class, 'store']);
+    Route::get('/employees/{id}/edit', [EmployeeController::class, 'edit']);
+    Route::put('/update/{id}', [EmployeeController::class, 'update']);
+    Route::delete('/delete/{id}', [EmployeeController::class, 'destroy']);
+    Route::post('/logout', [UsersController::class, 'logout']);
+    Route::get('/me', fn (Request $request) => $request->user());
+});
+
+Route::get('/server', fn (Request $request) => response()->json($_SERVER));
+
+// Accept: application/json
+// Content-Type: application/json

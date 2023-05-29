@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [value, setValue] = useState<Record<string, string>>({
@@ -8,10 +8,11 @@ const Login = () => {
 });
 
 
+
   const navigate = useNavigate();
 
   useEffect(() =>{
-    if(localStorage.getItem('user-info')){
+    if(sessionStorage.getItem('token')){
     navigate('/');
     }
   },[]);
@@ -21,20 +22,23 @@ const Login = () => {
 };
 
 
-
   const handleSubmit = (event: any) => {
     event.preventDefault();
-     fetch('http://localhost:8000/api/login', {
+    const token = sessionStorage.getItem("token");
+     fetch('http://localhost:8000/api/login', { 
         body: JSON.stringify(value),
         headers: {
-            'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer:' + token,
         },
         method: 'POST',
     })
     .then(res => res.json())
     
     .then(resData => {
-      localStorage.setItem('user-info', JSON.stringify(resData))
+      sessionStorage.setItem('token', JSON.stringify(resData.token))
+      
       if(resData.message){
         alert("not a valid user");
         navigate('/login');
@@ -49,6 +53,7 @@ const Login = () => {
 };
   return (
     <>
+    <h2 style={{ marginLeft: "30px", fontWeight: "bold" }}>Login</h2>
       <main>
         <form onSubmit={handleSubmit}>
           <h1></h1>
@@ -61,7 +66,26 @@ const Login = () => {
           <input style={{marginLeft: "30px"}} type='password' onChange={handleChange} name='password' className='form-control' placeholder="Password" required />
           {/* <strong style={{marginLeft: "30px", fontWeight: "bold", color: 'red'}}>Invalid Password</strong><br /> */}
           </div>
+          
           <button type='submit' className='btn btn-primary btn-sm' style={{marginLeft: "30px", marginTop: "10px"}}>Sign in</button>
+          <Link to={"/register"}>
+          <button
+            type="button"
+            style={{ marginLeft: "10px", marginTop: "10px" }}
+            className="btn btn-outline-info btn-sm"
+          >
+            Sign up
+          </button>
+        </Link>
+        <Link to={"/register"}>
+          <button
+            type="button"
+            style={{ marginLeft: "10px", marginTop: "10px" }}
+            className="btn btn-outline-info btn-sm"
+          >
+            Logout
+          </button>
+        </Link>
         </form>
       </main>
     </>

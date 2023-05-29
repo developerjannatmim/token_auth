@@ -8,74 +8,50 @@ use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
-    public function index()
-    {
-        return User::all();
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-    public function show($id)
-    {
-        return User::findOrFail($id);
-    }
-
-
-    public function edit($id)
-    {
-        return User::find($id);
-
-    }
-
-    public function update(Request $request, $id)
-    {
-        $user = User::whereId($id);
-        $user->update([
-           'name'=>$request->name,
-           'email'=>$request->email,
-           'password'=> Hash::make($request->password),
-        ]);
-
-        return response()->json();
-    }
-
-    public function destroy($id)
-    {
-        return User::destroy($id);
-    }
-
 
     public function register(Request $request)
     {
-        User::create([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=>$request->password
-         ]);
-         return response()->json('successfully created');
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password
+        ]);
+
+        $token = $user->createToken('my-app-token')->plainTextToken;
+
+        $response = [
+            'user' => $user,
+            'token' => $token,
+        ];
+        return response($response, 201);
     }
 
 
     public function login(Request $request)
     {
         $user = User::where('email', $request->email)->first();
-        if(!$user || !Hash::check($request->password, $user->password)){
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
-                'message'=>['not a valid user']
+                'message' => ['not a valid user']
             ], 404);
         }
-        $token = $user->createToken('my-app-tokeh')->plainTextToken;
+        $token = $user->createToken('my-app-token')->plainTextToken;
 
         $response = [
-            'user'=>$user,
-            'token'=>$token,
+            'user' => $user,
+            'token' => $token,
         ];
         return response($response, 201);
     }
 
 
+    // public function logout(Request $request)
+    // {
+    //     auth()->user()->tokens()->delete();
+
+    //     return [
+    //         'message' => 'Logged out'
+    //     ];
+    // }
 
 }
